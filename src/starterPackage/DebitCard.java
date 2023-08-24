@@ -1,14 +1,14 @@
 package starterPackage;
-public class DebitCard extends BankCard { // производный класс "Дебетовая карта" от класса "Банковская карта"
+public class DebitCard extends BankCard {
     public DebitCard(int primaryBalance) {
         super(primaryBalance);
     }
     @Override
-    public void topUp(int amount){ // функция "пополнить"
+    public void topUp(int amount){
         super.topUp(amount);
     }
     @Override
-    public void infoBalance(){ // функция "получить информацию о балансе"
+    public void infoBalance(){
         super.infoBalance();
     }
 }

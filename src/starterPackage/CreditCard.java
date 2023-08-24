@@ -1,9 +1,9 @@
 package starterPackage;
 
-public class CreditCard extends BankCard { // производный класс "Кредитная карта" от класса "Банковская карта"
+public class CreditCard extends BankCard {
 
-    private int creditMoney; // свойство "кредитные средства"
-    private final int limit; // свойство "лимит"
+    private int creditMoney;
+    private final int limit;
 
     public CreditCard(int primaryCredit, int primaryBalance, int primaryLimit) {
         super(primaryBalance);
@@ -11,25 +11,25 @@ public class CreditCard extends BankCard { // производный класс 
         this.limit = primaryLimit;
     }
 
-    private synchronized void payCreditFunds(int amount) { // фунция "оплатить кредитными средствами"
+    private synchronized void payCreditFunds(int amount) {
         this.creditMoney -= amount;
     }
 
-    public boolean payProduct(int amount) { // функция "купить продукт"
+    public boolean payProduct(int amount) {
         boolean paymentState = true;
-        if (super.getBalance() > 0) { // проверка на наличие собсвенных средств
-            if (super.getBalance() > amount) { // если да, то проверяем хватает ли средств на покупку
-                super.pay(amount); // если да, то платим с собсвенных средств
+        if (super.getBalance() > 0) {
+            if (super.getBalance() > amount) {
+                super.pay(amount);
             } else {
-                int credit = amount - super.getBalance(); // если нет, то узнаем сколько не хватает на покупку
-                if (credit < this.creditMoney) { // проверяем хватит ли кредитных средств на покупку
-                    super.pay(super.getBalance()); // если да, то списываем деньги до 0 с собсвенных средств
-                    payCreditFunds(credit); // а после остаток с кредитных средств
+                int credit = amount - super.getBalance();
+                if (credit < this.creditMoney) {
+                    super.pay(super.getBalance());
+                    payCreditFunds(credit);
                 } else
-                    System.out.println("Нет средств на покупку"); // если денег не хватает на покупку, то отказываем в оплате
+                    System.out.println("Нет средств на покупку");
                 paymentState = false;
             }
-        } else if (this.creditMoney > amount) { // если собсвенных средств нет, то проверяем хватит ли кредитных средсв на покупку
+        } else if (this.creditMoney > amount) {
             payCreditFunds(amount);
         } else {
             System.out.println("Нет средств на покупку");
@@ -39,28 +39,28 @@ public class CreditCard extends BankCard { // производный класс 
         return paymentState;
     }
 
-    private synchronized void topUpCreditFunds(int amount) { // функция "пополнить кредитные средства"
+    private synchronized void topUpCreditFunds(int amount) {
         this.creditMoney += amount;
     }
 
-    public void topUpFunds(int amount) { // функция "пополнить средства"
-        if (this.creditMoney < this.limit) { // если кредитных средств меньше лимита
-            int credit = this.limit - this.creditMoney; // то узнаем на сколько необходимо поплнить до лимита
-            if (credit >= amount) { // если кредит больше пополняемой суммы
-                topUpCreditFunds(amount); // то закрываем долг по кредитным средствам
+    public void topUpFunds(int amount) {
+        if (this.creditMoney < this.limit) {
+            int credit = this.limit - this.creditMoney;
+            if (credit >= amount) {
+                topUpCreditFunds(amount);
             } else {
-                topUpCreditFunds(credit); // если нет, то закрываем долг по кредитным средствам
-                super.topUp(amount - credit); // оставшиеся деньги начисляем на собсвенные средства
+                topUpCreditFunds(credit);
+                super.topUp(amount - credit);
             }
         } else {
-            super.topUp(amount); // если кредитных средств столько же, сколько и лимит,
-            // то все начисляемые деньги идут в счет собсвенных средсвт
+            super.topUp(amount);
+
         }
         infoBalance();
     }
 
     @Override
-    public void infoBalance() { // функция "получить информацию о балансе"
+    public void infoBalance() {
         System.out.println("Ваш кредитный лимит: " + this.limit);
         System.out.println("Кредитные средства: " + this.creditMoney);
         super.infoBalance();

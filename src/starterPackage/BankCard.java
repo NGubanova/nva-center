@@ -1,60 +1,60 @@
 package starterPackage;
 
-abstract class BankCard { // Класс банковская карта
-    private int balance; // свойство баланс
-    private int bonus; // свойство бонус
+abstract class BankCard {
+    private int balance;
+    private int bonus;
 
     public BankCard(int primaryBalance) {
         this.balance = primaryBalance;
     }
 
-    protected synchronized void topUp(int amount){ // функция "пополнить"
+    protected synchronized void topUp(int amount){
         if (amount > 0){
             this.balance += amount;
         }
     }
 
-    protected synchronized void pay(int amount){ // функция "оплатить"
+    protected synchronized void pay(int amount){
         if (amount > 0 && amount <= this.balance){
             this.balance -= amount;
         }
     }
 
-    protected void infoBalance() { // функция "получить информацию о балансе"
+    protected void infoBalance() {
         System.out.println("Собственные средства: "+balance);
     }
 
-    protected int getBalance() { // функция "получить баланс"
+    protected int getBalance() {
         return balance;
-    } // функция "получить баланс"
+    }
 
-    private void addBonus(int amount){ // функция "добавить бонусы"
+    private void addBonus(int amount){
         this.bonus += amount;
-    } // функция "добавить бонусы"
+    }
 
-    private void spendBonus(int amount){ // функция "списать бонусы"
+    private void spendBonus(int amount){
         this.bonus -= amount;
-    } // функция "списать бонусы"
+    }
     protected int getBonus(){
         return bonus;
-    }// функция "получить бонусы"
+    }
 
     protected int useBonus(int amount, boolean useBonus, double percentBonus){
-        int writeOFF=1; // переменная, в которую передается сумма списания со счета
-        if (useBonus){ // узнаем собирается ли человек списывать бонусы
-            if (amount > getBonus()){ // узнаем сумма покупки больше колличества бонусов или нет
-                int remainder = amount - getBonus(); // если да, то узнаем сколько необходимо списать средств
-                writeOFF = remainder; // записываем какую сумму необходимо списать
-                spendBonus(getBonus()); // списываем все бонусы в счет покупки
-                addBonus((int) Math.round(remainder*percentBonus)); // начисляем 1% от покупки(со списанных средств)
-            } else { // если бонусов больше, чем сумма покупки то
-                int spentBonus = getBonus() - amount+1; // узнаем разницу между суммой покупки и бонусов
-                spendBonus(spentBonus); // списываем бонусы
+        int writeOFF=1;
+        if (useBonus){
+            if (amount > getBonus()){
+                int remainder = amount - getBonus();
+                writeOFF = remainder;
+                spendBonus(getBonus());
+                addBonus((int) Math.round(remainder*percentBonus));
+            } else {
+                int spentBonus = getBonus() - amount+1;
+                spendBonus(spentBonus);
             }
         } else {
-            writeOFF=amount;// если человек не хочет списывать бонусы, то списываем всю сумму покупки
-            addBonus((int) Math.round(amount*percentBonus)); // начисляем 1% бонусов
+            writeOFF=amount;
+            addBonus((int) Math.round(amount*percentBonus));
         }
-        return writeOFF; // возвращаем сумму, которую необходимо списать
+        return writeOFF;
     }
 }

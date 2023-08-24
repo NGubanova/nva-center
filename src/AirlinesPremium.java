@@ -11,8 +11,8 @@ public class AirlinesPremium extends CreditCard {
         this.cashback +=amount;
     }
 
-    public void payAir(int amount, String purchaseType){ // функция оплаты
-        this.cashback = switch (purchaseType) { // в зависимости от типа покупки будет начислен разный кэшбэк
+    public void payAir(int amount, String purchaseType){
+        this.cashback = switch (purchaseType) {
             case ("hotel") -> (int) Math.round(amount * 0.1);
             case ("airTicket") -> (int) Math.round(amount * 0.07);
             case ("booking") -> (int) Math.round(amount * 0.05);
