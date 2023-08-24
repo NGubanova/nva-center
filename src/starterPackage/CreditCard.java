@@ -35,7 +35,6 @@ public class CreditCard extends BankCard {
             System.out.println("Нет средств на покупку");
             paymentState = false;
         }
-        infoBalance();
         return paymentState;
     }
 
@@ -44,8 +43,8 @@ public class CreditCard extends BankCard {
     }
 
     public void topUpFunds(int amount) {
+        int credit = this.limit - this.creditMoney;
         if (this.creditMoney < this.limit) {
-            int credit = this.limit - this.creditMoney;
             if (credit >= amount) {
                 topUpCreditFunds(amount);
             } else {
@@ -54,9 +53,7 @@ public class CreditCard extends BankCard {
             }
         } else {
             super.topUp(amount);
-
         }
-        infoBalance();
     }
 
     @Override

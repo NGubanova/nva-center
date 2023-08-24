@@ -6,13 +6,23 @@ public class GamesCard extends CreditCard {
         super(primaryCredit, primaryBalance, primaryLimit);
     }
 
-    public void payGames(int amount, String purchaseType, boolean useBonus){
-        double percentBonus = switch (purchaseType){
+    public void pay(int amount, String purchaseType, boolean useBonus){
+        double percentBonus = countBonus(purchaseType);
+        int writeOffAmount = super.useBonus(amount, useBonus,percentBonus);
+        super.payProduct(writeOffAmount);
+    }
+
+    private double countBonus( String purchaseType){
+        return switch (purchaseType){
             case ("food"),("entertainment"),("club"),("electStore"),("transport") -> 0.02;
             case ("gameStore") -> 0.05;
             default -> 0.01;
         };
-        int writeOFF = super.useBonus(amount, useBonus,percentBonus);
-        super.payProduct(writeOFF);
+    }
+
+    @Override
+    public void infoBalance() {
+        super.infoBalance();
+        System.out.println("Ваши накопленные бонусы: "+ super.getBonus());
     }
 }

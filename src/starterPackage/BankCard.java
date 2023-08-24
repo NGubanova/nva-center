@@ -3,6 +3,8 @@ package starterPackage;
 abstract class BankCard {
     private int balance;
     private int bonus;
+    private int writeOffAmount = 1;
+    private int accruedBonus = 0;
 
     public BankCard(int primaryBalance) {
         this.balance = primaryBalance;
@@ -28,7 +30,7 @@ abstract class BankCard {
         return balance;
     }
 
-    private void addBonus(int amount){
+    private void topUpBonus(int amount){
         this.bonus += amount;
     }
 
@@ -40,21 +42,34 @@ abstract class BankCard {
     }
 
     protected int useBonus(int amount, boolean useBonus, double percentBonus){
-        int writeOFF=1;
         if (useBonus){
-            if (amount > getBonus()){
-                int remainder = amount - getBonus();
-                writeOFF = remainder;
-                spendBonus(getBonus());
-                addBonus((int) Math.round(remainder*percentBonus));
-            } else {
-                int spentBonus = getBonus() - amount+1;
-                spendBonus(spentBonus);
-            }
+            payWithUseBonus(amount, percentBonus);
         } else {
-            writeOFF=amount;
-            addBonus((int) Math.round(amount*percentBonus));
+            payWithoutUseBonus(amount, percentBonus);
         }
-        return writeOFF;
+        return writeOffAmount;
+    }
+
+    private void payWithUseBonus(int amount,double percentBonus){
+        if (amount > getBonus()){
+            int remainder = getRemainder(amount);
+            writeOffAmount = remainder;
+            spendBonus(getBonus());
+            accruedBonus = (int) Math.round(remainder*percentBonus);
+        } else {
+            int spentBonus = getBonus() - amount + 1;
+            spendBonus(spentBonus);
+        }
+        topUpBonus(accruedBonus);
+    }
+
+    private void payWithoutUseBonus(int amount,double percentBonus){
+        writeOffAmount=amount;
+        accruedBonus =(int) Math.round(amount*percentBonus);
+        topUpBonus(accruedBonus);
+    }
+
+    private int getRemainder(int amount){
+        return amount-getBonus();
     }
 }
