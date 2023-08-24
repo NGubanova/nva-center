@@ -8,9 +8,9 @@ public class Main {
 
         card6866.topUpFunds(5000);
         card6866.infoBalance();
-        card6866.payProduct(5000);
+        card6866.payCreditCard(5000);
         card6866.infoBalance();
-        card6866.payProduct(3000);
+        card6866.payCreditCard(3000);
         card6866.infoBalance();
         card6866.topUpFunds(2000);
         card6866.infoBalance();

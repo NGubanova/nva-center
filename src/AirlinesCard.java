@@ -7,7 +7,7 @@ public class AirlinesCard extends CreditCard {
         super(primaryCredit, primaryBalance, primaryLimit);
     }
     public void pay(int amount, String purchaseType){
-        super.payProduct(amount) ;
+        super.payCreditCard(amount) ;
         countCashback(amount, purchaseType);
         topUpCashback(this.receivedCashback);
     }

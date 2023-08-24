@@ -15,27 +15,31 @@ public class CreditCard extends BankCard {
         this.creditMoney -= amount;
     }
 
-    public boolean payProduct(int amount) {
-        boolean paymentState = true;
+    public void payCreditCard(int amount) {
         if (super.getBalance() > 0) {
-            if (super.getBalance() > amount) {
-                super.pay(amount);
-            } else {
-                int credit = amount - super.getBalance();
-                if (credit < this.creditMoney) {
-                    super.pay(super.getBalance());
-                    payCreditFunds(credit);
-                } else
-                    System.out.println("Нет средств на покупку");
-                paymentState = false;
-            }
-        } else if (this.creditMoney > amount) {
-            payCreditFunds(amount);
-        } else {
+            verificationFunds(amount);
+        }else if (this.creditMoney > amount) {
+            payCreditFunds(amount);}
+        else {
             System.out.println("Нет средств на покупку");
-            paymentState = false;
         }
-        return paymentState;
+    }
+
+    private void verificationFunds(int amount){
+        if (super.getBalance() > amount) {
+            super.pay(amount);
+        } else {
+            verificationCreditFunds(amount);
+        }
+    }
+
+    private void verificationCreditFunds(int amount){
+        int credit = amount - super.getBalance();
+        if (credit < this.creditMoney) {
+            super.pay(super.getBalance());
+            payCreditFunds(credit);
+        } else
+            System.out.println("Нет средств на покупку");
     }
 
     private synchronized void topUpCreditFunds(int amount) {
@@ -43,16 +47,20 @@ public class CreditCard extends BankCard {
     }
 
     public void topUpFunds(int amount) {
-        int credit = this.limit - this.creditMoney;
         if (this.creditMoney < this.limit) {
-            if (credit >= amount) {
-                topUpCreditFunds(amount);
-            } else {
-                topUpCreditFunds(credit);
-                super.topUp(amount - credit);
-            }
+            verificationAccount(amount);
         } else {
             super.topUp(amount);
+        }
+    }
+    
+    private void verificationAccount(int amount){
+        int credit = this.limit - this.creditMoney;
+        if (credit >= amount) {
+            topUpCreditFunds(amount);
+        } else {
+            topUpCreditFunds(credit);
+            super.topUp(amount - credit);
         }
     }
 

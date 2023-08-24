@@ -9,7 +9,7 @@ public class GamesCard extends CreditCard {
     public void pay(int amount, String purchaseType, boolean useBonus){
         double percentBonus = countBonus(purchaseType);
         int writeOffAmount = super.useBonus(amount, useBonus,percentBonus);
-        super.payProduct(writeOffAmount);
+        super.payCreditCard(writeOffAmount);
     }
 
     private double countBonus( String purchaseType){
